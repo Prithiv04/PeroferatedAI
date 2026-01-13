@@ -6,6 +6,12 @@ class PAITracker:
     def __init__(self):
         self.pai_neuron_modules = []
         self.tracked_neuron_modules = []
+        self.history = {
+            'epochs': [],
+            'accuracy': [],
+            'loss': [],
+            'sparsity': []
+        }
 
     def add_pai_neuron_module(self, module):
         self.pai_neuron_modules.append(module)
@@ -13,10 +19,19 @@ class PAITracker:
     def add_tracked_neuron_module(self, module):
         self.tracked_neuron_modules.append(module)
 
+    def record_metrics(self, epoch, accuracy, loss, sparsity):
+        self.history['epochs'].append(epoch)
+        self.history['accuracy'].append(accuracy)
+        self.history['loss'].append(loss)
+        self.history['sparsity'].append(sparsity)
+
     def clear_all_processors(self):
         for module in self.pai_neuron_modules:
             if hasattr(module, 'clear_processors'):
                 module.clear_processors()
+    
+    def clear_history(self):
+        self.history = {'epochs': [], 'accuracy': [], 'loss': [], 'sparsity': []}
 
 # Copyright (c) 2025 Perforated AI
 """PAI configuration file."""
